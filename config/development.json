@@ -1,0 +1,11 @@
+{
+    "logLevel": "debug",
+    "name": "wework",
+    "username": "wework",
+    "password": "SguBAOIG2Xr3yhzKobJnK0ENVgXj68",
+    "host": "we-work.c8kiod7k9d6d.us-east-1.rds.amazonaws.com",
+    "port": 3306,
+    "minConnections": 0,
+    "maxConnections": 10,
+    "maxIdleTime": 10000
+}
