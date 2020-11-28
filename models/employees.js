@@ -41,6 +41,10 @@ Employees.init(
       field: 'hire_date',
       type: Sequelize.DATE,
     },
+    birthday: {
+      field: 'birth_date',
+      type: Sequelize.DATE,
+    }
   },
   {
     tableName: 'employees',

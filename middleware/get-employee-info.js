@@ -6,7 +6,9 @@ const _ = require('lodash');
 const getDepartment = async (empNo) => {
     const row = await query.employees.findDepartment(empNo);
     const department = await query.departments.findByDepNo(row.deptNo);
-    return department.deptName;
+    const deptManager = await query.deptManager.findDeptManager(row.deptNo);
+    const manager = await query.employees.findByEmpNo(deptManager.empNo);
+    return { name: department.deptName, deptManager: manager.dataValues };
 }
 
 const getTitle = async (empNo) => {
@@ -15,6 +17,7 @@ const getTitle = async (empNo) => {
 }
 
 const getEmployeeInfo = async (req, res) => {
+    console.log('Getting employee info');
     const empNo = req.params.empNo || null;
     let response = {};
     if (empNo) {
@@ -30,11 +33,14 @@ const getEmployeeInfo = async (req, res) => {
             console.log(response);
         }
         catch (err) {
+            console.log(err);
         };
     }
     else {
         response.body = { 'message': 'empId is null' };
     }
+    console.log('Sending response');
+    console.log(response.body);
     res.json(response.body);
 };
 

@@ -2,9 +2,13 @@
 
 const express = require('express')
 const bodyParser = require('body-parser');
-const config = require('./config');
 const app = express()
 const router = require('./routes/external/employee');
+
+const cors = require('cors')
+
+app.use(cors());
+
 app.use(bodyParser.urlencoded({
     extended: true
 }));
