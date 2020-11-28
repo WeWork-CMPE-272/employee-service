@@ -20,16 +20,20 @@ User.init(
         field: 'user_id',
         type: Sequelize.INTEGER,
         primaryKey: true,
+        autoIncrement: true,
       },
     empNo: {
       field: 'emp_no',
       type: Sequelize.INTEGER,
-      primaryKey: true,
     },
-    firstName: {
+    username: {
         field: 'username',
         type: Sequelize.STRING,
     },
+    admin: {
+      field: 'admin',
+      type: Sequelize.BOOLEAN,
+    }
 },
   {
     tableName: 'user',

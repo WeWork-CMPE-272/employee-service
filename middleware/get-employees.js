@@ -9,8 +9,14 @@ const getTitle = async (empNo) => {
     return _.omit(row.dataValues, 'empNo');
 }
 
+const getUser = async (empNo) => {
+    const row = await query.user.getUserByEmpNo(empNo);
+    if(row)
+        return _.omit(row.dataValues, 'empNo');
+    return {}
+}
+
 const getAllEmployees = async (req, res) => {
-    console.log('Hell World');
     const offset = req.params.offset || 0;
     let response = {};
     let employees = [];
@@ -19,14 +25,16 @@ const getAllEmployees = async (req, res) => {
         console.log(allEmployees);
         employees = await P.map(allEmployees, async employee => {
             const title = await getTitle(employee.empNo);
+            const user = await getUser(employee.empNo);
             return {
                 ...employee.dataValues,
                 ...title,
+                ...user,
             }
         })
         console.log(employees);
         response.body = {
-           employees
+            employees
         }
     }
     catch (err) {
