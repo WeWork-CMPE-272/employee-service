@@ -17,9 +17,15 @@ app.use(bodyParser.json());
 
 const port = 4000
 
+// Health endpoint for AWS ELB
+app.get('/health', function (req, res) {
+    console.log('Health Endpoint Hit');
+    res.status(200).end();
+});
+
 
 app.use('/employee', router);
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    console.log(`Employee service listening at http://localhost:${port}`)
 })
