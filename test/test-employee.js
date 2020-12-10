@@ -9,7 +9,7 @@ const getAllEmployees = require('./../middleware/get-employees');
 
 // Mocking get tweet calls
 nock('http://localhost:4000')
-    .post('/employee/100/title')
+    .post('/employee/10001/title')
     .reply(200);
 
 nock('https://api.twitter.com')
@@ -69,6 +69,22 @@ describe('Testing Employee', () => {
 
         await updateTitle(req, res);
     });
+
+    it('test getAllEmployees', async () => {
+        const req = {
+            params: { empNo: '10001' },
+            body: { title: 'testing' },
+        };
+
+        const res = {
+            json(body) {
+                assert.true('employees' in body);
+            },
+        };
+
+        await getAllEmployees(req, res);
+    });
+
 
     // it('test get tweet with invalid ID', async () => {
     //     const req = {
