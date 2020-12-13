@@ -7,38 +7,6 @@ const getEmployeeInfo = require('./../middleware/get-employee-info');
 const getSalary = require('./../middleware/get-salary');
 const getAllEmployees = require('./../middleware/get-employees');
 
-// Mocking get tweet calls
-nock('http://localhost:4000')
-    .post('/employee/10001/title')
-    .reply(200);
-
-nock('https://api.twitter.com')
-    .get('/1.1/statuses/show.json?id=124')
-    .reply(400, { status: 'BAD REQUEST' });
-
-// Mocking post tweet calls
-nock('https://api.twitter.com')
-    .post('/1.1/statuses/update.json?status=valid')
-    .reply(200, { status: 'OK' });
-
-nock('https://api.twitter.com')
-    .post('/1.1/statuses/update.json?status=duplicate')
-    .reply(400, { status: 'BAD REQUEST' });
-
-// Mocking delete tweet calls
-nock('https://api.twitter.com')
-    .post('/1.1/statuses/destroy/123.json')
-    .reply(200, { status: 'OK' });
-
-nock('https://api.twitter.com')
-    .post('/1.1/statuses/destroy/124.json')
-    .reply(400, { status: 'BAD REQUEST' });
-
-// Mocking get all tweet calls
-nock('https://api.twitter.com')
-    .get('/1.1/statuses/user_timeline.json')
-    .reply(200, { status: 'OK' });
-
 describe('Testing Employee', () => {
     it('test updateTitle', async () => {
         const req = {
@@ -72,7 +40,7 @@ describe('Testing Employee', () => {
 
     it('test getAllEmployees', async () => {
         const req = {
-            params: { empNo: '10001' },
+            params: {},
             body: { title: 'testing' },
         };
 
@@ -85,131 +53,47 @@ describe('Testing Employee', () => {
         await getAllEmployees(req, res);
     });
 
+    it('test getSalary', async () => {
+        const req = {
+            params: { empNo: '10001' },
+            body: { salary: 'testing' },
+        };
 
-    // it('test get tweet with invalid ID', async () => {
-    //     const req = {
-    //         params: { id: '124' },
-    //     };
-    //     const res = {
+        const res = {
+            json(body) {
+                assert.true('salaries' in body);
+            },
+        };
 
-    //         json(body) {
-    //             assert.is(body.status, 'BAD REQUEST');
-    //         },
-    //     };
+        await getSalary(req, res);
+    });
+    it('test getSalary with no employee no.', async () => {
+        const req = {
+            params: { },
+            body: { salary: 'testing' },
+        };
 
-    //     await getTweet(req, res);
-    // });
+        const res = {
+            json(body) {
+                assert.is(body.message, 'empId is null');
+            },
+        };
 
-    // it('test get tweet with empty ID', async () => {
-    //     const req = {
-    //         params: {},
-    //     };
-    //     const res = {
+        await getSalary(req, res);
+    });
 
-    //         json(body) {
-    //             assert.is(body.message, 'tweetId is empty');
-    //         },
-    //     };
+    it('test get employee info', async () => {
+        const req = {
+            params: {empNo: '10001'},
+            body: { title: 'testing' },
+        };
 
-    //     await getTweet(req, res);
-    // });
+        const res = {
+            json(body) {
+                assert.true('department' in body);
+            },
+        };
 
-    // it('test post tweet with valid tweet', async () => {
-    //     const req = {
-    //         body: {
-    //             tweet: 'valid',
-    //         },
-    //     };
-    //     const res = {
-    //         json(body) {
-    //             assert.is(body.status, 'OK');
-    //         },
-
-    //     };
-    //     await postTweet(req, res);
-    // });
-
-    // it('test post tweet with duplicate tweet', async () => {
-    //     const req = {
-    //         body: {
-    //             tweet: 'duplicate',
-    //         },
-    //     };
-    //     const res = {
-    //         json(body) {
-    //             assert.is(body.status, 'BAD REQUEST');
-    //         },
-
-    //     };
-    //     await postTweet(req, res);
-    // });
-
-    // it('test post tweet with no tweet', async () => {
-    //     const req = {
-    //         body: {},
-    //     };
-    //     const res = {
-    //         json(body) {
-    //             assert.is(body.message, 'Response is empty');
-    //         },
-
-    //     };
-    //     await postTweet(req, res);
-    // });
-
-    // it('test delete tweet with valid ID', async () => {
-    //     const req = {
-    //         params: { id: '123' },
-    //     };
-    //     const res = {
-    //         json(body) {
-    //             assert.is(body.status, 'OK');
-    //         },
-    //     };
-
-    //     await deleteTweet(req, res);
-    // });
-
-    // it('test delete tweet with invalid ID', async () => {
-    //     const req = {
-    //         params: { id: '124' },
-    //     };
-    //     const res = {
-
-    //         json(body) {
-    //             assert.is(body.status, 'BAD REQUEST');
-    //         },
-    //     };
-
-    //     await deleteTweet(req, res);
-    // });
-
-    // it('test delete tweet with empty ID', async () => {
-    //     const req = {
-    //         params: {},
-    //     };
-    //     const res = {
-
-    //         json(body) {
-    //             assert.is(body.message, 'tweetId is empty');
-    //         },
-    //     };
-
-    //     await deleteTweet(req, res);
-    // });
-
-    // it('test get all tweets', async () => {
-    //     const req = {
-    //     };
-    //     const res = {
-
-    //         json(body) {
-    //             assert.is(body.status, 'OK');
-    //         },
-    //     };
-
-    //     await getAllTweets(req, res);
-    // });
+        await getEmployeeInfo(req, res);
+    });
 });
-
-// Tamanna Mehta

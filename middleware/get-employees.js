@@ -22,7 +22,6 @@ const getAllEmployees = async (req, res) => {
     let employees = [];
     try {
         const allEmployees = await query.employees.getAllEmployees(offset);
-        console.log(allEmployees);
         employees = await P.map(allEmployees, async employee => {
             const title = await getTitle(employee.empNo);
             const user = await getUser(employee.empNo);
@@ -32,7 +31,6 @@ const getAllEmployees = async (req, res) => {
                 ...user,
             }
         })
-        console.log(employees);
         response.body = {
             employees
         }

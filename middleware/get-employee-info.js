@@ -17,7 +17,6 @@ const getTitle = async (empNo) => {
 }
 
 const getEmployeeInfo = async (req, res) => {
-    console.log('Getting employee info');
     const empNo = req.params.empNo || null;
     let response = {};
     if (empNo) {
@@ -30,7 +29,6 @@ const getEmployeeInfo = async (req, res) => {
                 department,
                 ...title,
             }
-            console.log(response);
         }
         catch (err) {
             console.log(err);
@@ -39,8 +37,6 @@ const getEmployeeInfo = async (req, res) => {
     else {
         response.body = { 'message': 'empId is null' };
     }
-    console.log('Sending response');
-    console.log(response.body);
     res.json(response.body);
 };
 
